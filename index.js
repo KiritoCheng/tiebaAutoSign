@@ -22,7 +22,8 @@ var SIGN_DATA = {
 };
 // VARIABLE NAME
 var COOKIE = "Cookie", BDUSS = "BDUSS", TBS = 'tbs', PAGE_NO = 'page_no', ONE = '1', TIMESTAMP = "timestamp", DATA = 'data', FID = 'fid', SIGN_KEY = 'tiebaclient!!!', UTF8 = "utf-8", SIGN = "sign", KW = "kw";
-var bduss = 'VrSnVHYnFCVlRid2N5bE8tbVBUVGFHV1FyYlhULXU2cWFXVlR0fkhQNzJGWjFmRVFBQUFBJCQAAAAAAAAAAAEAAAD8n7pCa2lyaXRv0rkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPaIdV~2iHVfd3';
+// var bduss = 'VrSnVHYnFCVlRid2N5bE8tbVBUVGFHV1FyYlhULXU2cWFXVlR0fkhQNzJGWjFmRVFBQUFBJCQAAAAAAAAAAAEAAAD8n7pCa2lyaXRv0rkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPaIdV~2iHVfd3';
+var bduss = '1NfjFBVVVvdk1ObmJLWGMzNjVDMVAwZzBoUH5IRnNndU56bm1sQllYUVNOaUZmRVFBQUFBJCQAAAAAAAAAAAEAAADnSVkMU0FTQbXEz8TRqQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABKp-V4SqfleQ2';
 var headerInfo = Object.assign(HEADERINFO, { COOKIE: `BDUSS=${bduss}` });
 
 var get_tbs = function (bduss) {
@@ -81,25 +82,20 @@ let sign = function (bduss, tbs, fid, kw) {
                 console.error(`${kw}吧 签到失败。 ${e}`)
             })
             .then(r => {
-                console.log(r)
                 if (r['no'] == '1101') {
                     res(`${kw}吧 已经签到过了。`);
                     return;
                 }
-                if((r['no'] == '0')){
+                if ((r['no'] == '0')) {
                     res(`${kw}吧 签到成功`);
+                    return;
+                }
+                if ((r['no'] == '2150040')) {
+                    res("break");
                     return;
                 }
                 res(`${kw}吧 签到失败。${r['error']}`);
             })
-    })
-}
-
-function test(i) {
-    return new Promise((res) => {
-        setTimeout(() => {
-            res(i)
-        }, 1000)
     })
 }
 
@@ -109,6 +105,10 @@ function run() {
             let tbs = res[0], favorite = res[1];
             for (var i = 0; i < favorite.length; i++) {
                 let res = await sign(bduss, tbs, favorite[i]['forum_id'], favorite[i]['forum_name']);
+                if (res == 'break') {
+                    console.log('需要验证码，终止签到');
+                    return;
+                }
                 console.log(res)
             }
         })
@@ -123,4 +123,3 @@ rule.second = 0;
 let job = schedule.scheduleJob(rule, () => {
     run();
 });
-
