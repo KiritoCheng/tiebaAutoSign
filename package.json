@@ -1,0 +1,26 @@
+{
+  "name": "tiebaautosign",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "form-data": "^3.0.0",
+    "js-md5": "^0.7.3",
+    "node-fetch": "^2.6.1",
+    "node-schedule": "^1.3.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://1345036885%40qq.com:Zheng19960917@github.com/KiritoCheng/tiebaAutoSign.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KiritoCheng/tiebaAutoSign/issues"
+  },
+  "homepage": "https://github.com/KiritoCheng/tiebaAutoSign#readme"
+}

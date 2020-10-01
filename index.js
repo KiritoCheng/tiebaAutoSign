@@ -81,15 +81,16 @@ let sign = function (bduss, tbs, fid, kw) {
                 console.error(`${kw}吧 签到失败。 ${e}`)
             })
             .then(r => {
-                if (r['no'] == '1010') {
-                    res(`${kw}吧 签到失败。${r['error']}`);
-                    return;
-                }
+                console.log(r)
                 if (r['no'] == '1101') {
                     res(`${kw}吧 已经签到过了。`);
                     return;
                 }
-                res(`${kw}吧 签到成功`)
+                if((r['no'] == '0')){
+                    res(`${kw}吧 签到成功`);
+                    return;
+                }
+                res(`${kw}吧 签到失败。${r['error']}`);
             })
     })
 }
