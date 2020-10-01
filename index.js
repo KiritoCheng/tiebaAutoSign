@@ -117,10 +117,11 @@ function run() {
 }
 
 let rule = new schedule.RecurrenceRule();
-rule.hour = 8;
-rule.minute = 0;
+rule.hour = 15;
+rule.minute = 30;
 rule.second = 0;
 let job = schedule.scheduleJob(rule, () => {
-    run();
+    // run();
+    console.log('test')
 });
 
