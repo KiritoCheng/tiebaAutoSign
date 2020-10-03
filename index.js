@@ -82,19 +82,22 @@ let sign = function (bduss, tbs, fid, kw) {
                 console.error(`${kw}吧 签到失败。 ${e}`)
             })
             .then(r => {
-                if (r['no'] == '1101') {
-                    res(`${kw}吧 已经签到过了。`);
-                    return;
-                }
-                if ((r['no'] == '0')) {
-                    res(`${kw}吧 签到成功`);
-                    return;
-                }
-                if ((r['no'] == '2150040')) {
-                    res("break");
-                    return;
-                }
-                res(`${kw}吧 签到失败。${r['error']}`);
+                console.log(`结束签到贴吧：${kw} 延迟3S进行下一个贴吧签到`)
+                setTimeout(() => {
+                    if (r['no'] == '1101') {
+                        res(`${kw}吧 已经签到过了。`);
+                        return;
+                    }
+                    if ((r['no'] == '0')) {
+                        res(`${kw}吧 签到成功`);
+                        return;
+                    }
+                    if ((r['no'] == '2150040')) {
+                        res("break");
+                        return;
+                    }
+                    res(`${kw}吧 签到失败。${r['error']}`);
+                }, 3000)
             })
     })
 }
@@ -123,3 +126,4 @@ rule.second = 0;
 let job = schedule.scheduleJob(rule, () => {
     run();
 });
+run();
