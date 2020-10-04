@@ -71,19 +71,19 @@ let sign = function (bduss, tbs, fid, kw) {
     formData.append('kw', kw);
     formData.append('ie', tbs);
     return new Promise((res, rej) => {
-        console.info("开始签到贴吧：" + kw)
-        fetch(SIGN_URL, {
-            method: 'POST',
-            headers: headerInfo,
-            body: formData
-        }).then(function (response) { return response.json(); })
-            .catch(e => {
-                rej(null)
-                console.error(`${kw}吧 签到失败。 ${e}`)
-            })
-            .then(r => {
-                console.log(`结束签到贴吧：${kw} 延迟3S进行下一个贴吧签到`)
-                setTimeout(() => {
+        setTimeout(() => {
+            console.info("开始签到贴吧：" + kw)
+            fetch(SIGN_URL, {
+                method: 'POST',
+                headers: headerInfo,
+                body: formData
+            }).then(function (response) { return response.json(); })
+                .catch(e => {
+                    rej(null)
+                    console.error(`${kw}吧 签到失败。 ${e}`)
+                })
+                .then(r => {
+
                     if (r['no'] == '1101') {
                         res(`${kw}吧 已经签到过了。`);
                         return;
@@ -97,8 +97,8 @@ let sign = function (bduss, tbs, fid, kw) {
                         return;
                     }
                     res(`${kw}吧 签到失败。${r['error']}`);
-                }, 3000)
-            })
+                })
+        }, 5000)
     })
 }
 
@@ -109,7 +109,7 @@ function run() {
             for (var i = 0; i < favorite.length; i++) {
                 let res = await sign(bduss, tbs, favorite[i]['forum_id'], favorite[i]['forum_name']);
                 if (res == 'break') {
-                    console.log('需要验证码，终止签到');
+                    console.log(`需要验证码，终止签到, 剩下${favorite.length - i}个贴吧未签到`);
                     return;
                 }
                 console.log(res)
@@ -126,4 +126,3 @@ rule.second = 0;
 let job = schedule.scheduleJob(rule, () => {
     run();
 });
-run();
